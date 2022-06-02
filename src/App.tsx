@@ -1,25 +1,67 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { createContext } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useLocalStorage } from "./hooks/useLocalStorage";
+import "bootswatch/dist/zephyr/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
+// COMPONENTS
+// VIEWS
+import Login from "./views/Login/Login";
+import Home from "./views/Home/Home";
+import NotFound404 from "./views/NotFound404";
+import ProductView from "./views/Home/ProductView";
+import UserDashBoardTabs from "./views/UserDashBoard/UserDashBoardTabs";
+import Logout from "./views/Login/Logout";
+import AdminTabs from "./views/AdminDashboard/AdminTabs";
+import ProductPage from "./views/Home/ProductPage";
+export const AppContext = createContext({});
+
+// ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+// ;;;;;;;;;;;;;rrrrrrrrrrr;;;;;;;;;;;;;;;;;;;;
+// ;;;;;;;;;;;;;r;;;;;;;;;r;;;;;;;;;;;;;;;;;;;;
+// ;;;;;;;;;;;;;r;;;;;;;;;r;;;;;;;;;;;;;;;;;;;;
+// ;;;;;;;;;;;;;rrrrrrrrrr;;;;;;;;;;;;;;;;;;;;;
+// ;;;;;;;;;;;;;r;;;;;r;;;;;;;;;;;;;;;;;;;;;;;;
+// ;;;;;;;;;;;;;r;;;;;;r;;;;;;;;;;;;;;;;;;;;;;;
+// ;;;;;;;;;;;;;r;;;;;;;r;;;;;;;;;;;;;;;;;;;;;;
+// ;;;;;;;;;;;;;r;;;;;;;;r;;;;;;;;;;;;;;;;;;;;;
 
 function App() {
+  const [storedUser, setStoredUser] = useLocalStorage("user");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <style>{`
+				* {
+					box-sizing: border-box;
+				}
+			`}</style>
+      <AppContext.Provider value={{ storedUser, setStoredUser }}>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/swap-it/admin"
+              element={
+                storedUser.user?.is_superuser ? (
+                  <AdminTabs />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/page/:currentPage" element={<ProductPage />} />
+            <Route
+              path="/product-details/:product_id"
+              element={<ProductView />}
+            />
+            <Route path="/account" element={<UserDashBoardTabs />} />
+            <Route path="*" element={<NotFound404 />} />
+          </Routes>
+        </BrowserRouter>
+      </AppContext.Provider>
+    </>
   );
 }
 
