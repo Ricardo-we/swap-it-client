@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Alert } from 'react-bootstrap'
 
 interface FormControlProps extends React.HTMLProps<HTMLInputElement> {
@@ -7,21 +7,21 @@ interface FormControlProps extends React.HTMLProps<HTMLInputElement> {
     variant?: string
 }
 
-const FormControl = ({alertMessage, onChange=(e)=>{}, ...props}: FormControlProps) => {
+const FormControl = ({ alertMessage, onChange, ...props }: FormControlProps) => {
     const [matchPattern, setMatchPattern] = useState(true);
     const pattern = RegExp(props.pattern || '.');
-    
-    return (    
+
+    return (
         <div hidden={props.hidden} className="form-group">
             <label htmlFor={props.name}>{props.placeholder}</label>
-            <input 
-                {...props} 
+            <input
+                {...props}
                 onChange={e => {
-                    onChange(e)
-                    if(pattern.test(e.target.value)) setMatchPattern(true)
-                    else if(e.target.value === ''  && !props.required) setMatchPattern(true)
+                    onChange && onChange(e);
+                    if (pattern.test(e.target.value)) setMatchPattern(true)
+                    else if (e.target.value === '' && !props.required) setMatchPattern(true)
                     else setMatchPattern(false);
-                }} 
+                }}
                 className="form-control"
             />
             {alertMessage && pattern && !matchPattern &&
@@ -39,21 +39,21 @@ interface FormControlTextAreaProps extends React.HTMLProps<HTMLTextAreaElement> 
     variant?: string
 }
 
-export function FormControlTextArea({alertMessage, onChange=(e)=>{}, ...props}: FormControlTextAreaProps){
+export function FormControlTextArea({ alertMessage, onChange, ...props }: FormControlTextAreaProps) {
     const [matchPattern, setMatchPattern] = useState(true);
     const pattern = RegExp(props.pattern || '.');
-    
-    return (    
+
+    return (
         <div hidden={props.hidden} className="form-group">
             <label htmlFor={props.name}>{props.placeholder}</label>
-            <textarea 
-                {...props} 
+            <textarea
+                {...props}
                 onChange={e => {
-                    onChange(e)
-                    if(pattern.test(e.target.value)) setMatchPattern(true)
-                    else if(e.target.value === '' && !props.required) setMatchPattern(true)
+                    onChange && onChange(e)
+                    if (pattern.test(e.target.value)) setMatchPattern(true)
+                    else if (e.target.value === '' && !props.required) setMatchPattern(true)
                     else setMatchPattern(false);
-                }} 
+                }}
                 className="form-control"
             ></textarea>
             {alertMessage && pattern && !matchPattern &&
