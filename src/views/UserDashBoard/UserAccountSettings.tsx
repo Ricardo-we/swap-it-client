@@ -25,7 +25,7 @@ function UserAccountSettings() {
     const [addModalOpen, setAddModalOpen] = useState<boolean>(false);
     const [updateModalOpen, setUpdateModalOpen] = useState<boolean>(false);
     const [alertOpen, setAlertOpen] = useState<boolean>(false);
-    const [selectedContact, setSelectedContact] = useState({id: 0});
+    const [selectedContact, setSelectedContact] = useState({ id: 0 });
 
     const getUserContactInfo = () => {
         return getUserContactInfoRequest(storedUser)
@@ -39,14 +39,14 @@ function UserAccountSettings() {
             .catch((error) => toast.error(error.toString()));
     };
 
-    const deleteUserContactInfo = (contactId: number | string, closeModal:()=>void) => {
+    const deleteUserContactInfo = (contactId: number | string, closeModal: () => void) => {
         return contactId && deleteContactInfoRequest(storedUser, contactId)
             .then(getUserContactInfo)
             .then(closeModal)
             .catch(error => toast.error(error.toString()));
     }
 
-    const updateUserContactInfo = (contactInfo: UserContactInfo | any, contactId: number, closeModal:()=>void) => {
+    const updateUserContactInfo = (contactInfo: UserContactInfo | any, contactId: number, closeModal: () => void) => {
         return contactId && updateUserContactInfoRequest(storedUser, contactId, contactInfo)
             .then(getUserContactInfo)
             .then(closeModal)
@@ -98,7 +98,7 @@ function UserAccountSettings() {
                 )}
             </AnimatePresence>
 
-            <Accordion  alwaysOpen>
+            <Accordion alwaysOpen>
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>My contact info</Accordion.Header>
                     <Accordion.Body>
@@ -125,7 +125,7 @@ function UserAccountSettings() {
                 <Accordion.Item eventKey="1">
                     <Accordion.Header>My account settings</Accordion.Header>
                     <Accordion.Body>
-                        <UserSettingsForm/>
+                        <UserSettingsForm />
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
@@ -135,8 +135,8 @@ function UserAccountSettings() {
 
 const ListUserContactInfo = ({
     userContactInfoItems,
-    onDelete=()=>{},
-    onUpdate=()=>{},
+    onDelete,
+    onUpdate,
 }: {
     userContactInfoItems: UserContactInfo[];
     onDelete?: (contact?: any) => any;
@@ -147,15 +147,15 @@ const ListUserContactInfo = ({
             {userContactInfoItems &&
                 userContactInfoItems.map((contact, index) => (
                     <ListGroup.Item key={index} className="d-flex flex-wrap align-items-center justify-content-between">
-                        <div style={{width: 'fit-content'}}>
+                        <div style={{ width: 'fit-content' }}>
                             <strong>{contact.contact_type}</strong>: {contact.contact}
                         </div>
-                        <div style={{width: 100}}>
-                            <Button variant="" onClick={() => onDelete(contact)}>
-                                <MdDelete/>
+                        <div style={{ width: 100 }}>
+                            <Button variant="" onClick={() => onDelete && onDelete(contact)}>
+                                <MdDelete />
                             </Button>
-                            <Button variant="" onClick={() => onUpdate(contact)}>
-                                <MdEdit/>
+                            <Button variant="" onClick={() => onUpdate && onUpdate(contact)}>
+                                <MdEdit />
                             </Button>
                         </div>
                     </ListGroup.Item>

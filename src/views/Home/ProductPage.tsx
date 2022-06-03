@@ -33,7 +33,7 @@ function ProductPage({ children }: any) {
 			const swapItLocation = JSON.parse(
 				localStorage.getItem("swapit-location") || "{}"
 			);
-			let userLocation =
+			const userLocation =
 				storedUser.user?.location ||
 				swapItLocation?.country ||
 				(await getUserLocation());
