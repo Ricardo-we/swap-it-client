@@ -18,17 +18,6 @@ const productFormDataMaker = (product: ProductControl) => {
 			value: product?.images,
 		}
 	];
-
-	// if (product.images) {
-	// 	for (const image of product.images) {
-	// 		formData.push({
-	// 			name: "product_images",
-	// 			value: image,
-	// 			imageName: image.name,
-	// 		});
-	// 	}
-	// }
-
 	return formDataMaker(formData);
 };
 
